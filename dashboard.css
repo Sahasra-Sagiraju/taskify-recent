@@ -323,11 +323,16 @@ body.dark .home .text {
 }
 
 .Task {
-  padding: 10px;
-  /* border-radius: 16px; */
+  padding: 0 10px;
   margin: 15px;
   color: var(--text-color);
-  border-bottom: 2px solid white;
+  height: 290px;
+  overflow-y: scroll;
+}
+
+.Task > *:not(:last-child) {
+  border-bottom: 2px solid #fff;
+  padding-bottom: 20px;
 }
 
 .Task-name {
@@ -381,7 +386,7 @@ body.dark .home .text {
 }
 
 .home .TodaysTasks {
-  padding: 10px;
+  padding: 25px;
   border-radius: 13px;
   margin: 15px;
   color: var(--text-color);
@@ -394,16 +399,26 @@ body.dark .home .text {
 }
 
 .home .NextdayTasks {
-  padding: 10px;
+  padding: 25px;
   border-radius: 13px;
   margin: 10px;
   color: var(--text-color);
   border: 2px solid var(--text-color);
 }
 
+.nextDayTasksContainer,
+.thisWeeksTasksContainer {
+  margin-top: 15px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: scroll;
+}
+
 .home .ThisWeeksTasks {
   border: 2px solid black;
-  padding: 10px;
+  padding: 25px;
   border-radius: 13px;
   margin: 10px;
   color: var(--text-color);
@@ -556,52 +571,3 @@ select:focus {
   transform: translate(0, -11px) rotate(45deg);
 }
 /* URGENT TASKS */
-
-.urgent-tasks-container .urgent-tasks-details {
-  display: grid;
-  grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr;
-  margin: 30px;
-  gap: 10px;
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-  color: var(--text-color);
-  border: 2px solid var(--text-color);
-}
-
-.urgent-tasks-container .urgent-tasks {
-  padding: 5px;
-  margin: 20px;
-  /* border: 2px solid black; */
-  text-align: center;
-}
-
-.urgent-tasks-container #urgency {
-  background-color: red;
-  border-radius: 30px;
-  border: 1px solid transperant;
-  width: 100px;
-  height: 30px;
-  font-size: 14px;
-  color: white;
-}
-
-.urgent-tasks-container #details-button button {
-  background-color: #45a2a9;
-  width: 50%;
-  border-radius: 15px;
-  border: 2px solid transparent;
-}
-
-.urgent-tasks-container #sno {
-  width: 40px;
-  height: 40px;
-  background-color: #45a2a9;
-  border-radius: 100%;
-  border: 2px solid transparent;
-  font-size: 20px;
-}
-
-.urgent-tasks-container #urgent-task-name {
-  text-align: left;
-  margin-left: 0px;
-}
