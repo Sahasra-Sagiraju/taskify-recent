@@ -1,0 +1,16 @@
+{
+  "name": "taskify",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "rm -rf .parcel-cache && parcel src/index.html",
+    "build": "rm -rf .parcel-cache && parcel build src/index.html"
+  },
+  "devDependencies": {
+    "parcel": "^2.6.2"
+  },
+  "dependencies": {
+    "@cubejs-client/core": "^0.31.0",
+    "chart.js": "^4.0.0"
+  }
+}

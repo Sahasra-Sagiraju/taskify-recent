@@ -324,6 +324,7 @@ body.dark .home .text {
 
 .Task {
   padding: 0 10px;
+  padding-inline: 15px;
   margin: 15px;
   color: var(--text-color);
   height: 290px;
@@ -409,6 +410,7 @@ body.dark .home .text {
 .nextDayTasksContainer,
 .thisWeeksTasksContainer {
   margin-top: 15px;
+  padding-inline: 15px;
   height: 180px;
   display: flex;
   flex-direction: column;
