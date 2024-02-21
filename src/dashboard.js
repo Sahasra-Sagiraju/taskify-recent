@@ -5,13 +5,19 @@ const nextDaysTasksContainer = document.querySelector(".nextDayTasksContainer");
 const thisWeeksTasksContainer = document.querySelector(
   ".thisWeeksTasksContainer"
 );
+const dashboardBox = document.querySelector(".dashboard-box");
+const detailsBox = document.querySelector(".details-box");
+const detailsBtn = document.querySelector(".details-btn");
 
+// Helper functions
 const remDays = (currentDay) => 7 - currentDay;
 const resetTimeForDates = (startDate, testDate, endDate) => {
   startDate.setHours(0, 0, 0, 0);
   testDate.setHours(0, 0, 0, 0);
   endDate.setHours(0, 0, 0, 0);
 };
+
+// Main code
 
 const groupTasks = (tasksArray) => {
   const todayTasks = tasksArray.filter((task) => {
@@ -82,16 +88,12 @@ const updateDashboard = () => {
         `<div class="Task-name">
             <div>
               <div class="task-brief">
-                <img
-                  src="check.png"
-                  alt="task icon"
-                  style="height: 18px"
-                />
+                <i class='bx bx-check' style='color:#39bc71; font-size: 25px;'></i>
                 <span>${taskName}</span>
               </div>
               <div class="details">
                 <div class="date">
-                  <img src="calendar-days.png" alt="calender-icon" />
+                <i class='bx bx-calendar' style='color:#118d98; font-size: 25px;'></i>
                   <span>${startDate}</span>
                 </div>
                 <span>${subTask}</span>
@@ -121,11 +123,7 @@ const updateDashboard = () => {
         `<div class="Task-name">
         <div>
           <div class="task-brief">
-            <img
-              src="check.png"
-              alt="task icon"
-              style="height: 18px"
-            />
+          <i class='bx bx-check' style='color:#39bc71; font-size: 25px;'></i>
             <span>${taskName}</span>
           </div>
         </div>
@@ -148,11 +146,7 @@ const updateDashboard = () => {
         `<div class="Task-name">
         <div>
           <div class="task-brief">
-            <img
-              src="check.png"
-              alt="task icon"
-              style="height: 18px"
-            />
+          <i class='bx bx-check' style='color:#39bc71; font-size: 25px;'></i>
             <span>${taskName}</span>
           </div>
         </div>
@@ -165,3 +159,13 @@ const updateDashboard = () => {
 };
 
 updateDashboard();
+
+// details button click functionality
+const func = (event) => {
+  if (event.target.classList.contains("details-btn")) {
+    dashboardBox.setAttribute("hidden", true);
+    detailsBox.removeAttribute("hidden");
+  }
+};
+
+dashboardBox.addEventListener("click", func);

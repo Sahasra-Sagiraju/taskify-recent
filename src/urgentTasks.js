@@ -32,6 +32,14 @@ const updateUrgentTasksList = () => {
 
   urgentTasksContainer.innerHTML = "";
 
+  if (tasksArray.length === 0) {
+    urgentTasksContainer.insertAdjacentHTML(
+      "beforeend",
+      "<h1>No urgent tasks available</h1>"
+    );
+    return;
+  }
+
   tasksArrayCopy.forEach((task, index) => {
     console.log("urgent-tasks tag-" + task.duration.toLowerCase());
     urgentTasksContainer.insertAdjacentHTML(

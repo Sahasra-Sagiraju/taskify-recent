@@ -327,8 +327,15 @@ body.dark .home .text {
   padding-inline: 15px;
   margin: 15px;
   color: var(--text-color);
-  height: 290px;
+  height: 270px;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.Task::-webkit-scrollbar {
+  display: none;
 }
 
 .Task > *:not(:last-child) {
@@ -411,11 +418,16 @@ body.dark .home .text {
 .thisWeeksTasksContainer {
   margin-top: 15px;
   padding-inline: 15px;
-  height: 180px;
+  height: 160px;
   display: flex;
   flex-direction: column;
   gap: 15px;
   overflow-y: scroll;
+}
+
+.nextDayTasksContainer::-webkit-scrollbar,
+.thisWeeksTasksContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .home .ThisWeeksTasks {

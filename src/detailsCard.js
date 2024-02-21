@@ -12,16 +12,17 @@ backBtn.addEventListener("click", () => {
 
 const constructGraph = async () => {
   const data = [
-    { date: "2024-2-10", progress: 60 },
-    { date: "2024-2-11", progress: 100 },
+    { date: "2024-2-10", progress: 10 },
+    { date: "2024-2-11", progress: 60 },
     { date: "2024-2-12", progress: 90 },
     { date: "2024-2-13", progress: 40 },
-    { date: "2024-2-14", progress: 50 },
+    { date: "2024-2-14", progress: 30 },
   ];
 
   new Chart(document.getElementById("progress-by-day"), {
     type: "line",
     options: {
+      animation: false,
       plugins: {
         legend: {
           display: true,
@@ -40,3 +41,5 @@ const constructGraph = async () => {
     },
   });
 };
+
+constructGraph();
