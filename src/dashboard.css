@@ -360,6 +360,11 @@ body.dark .home .text {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* accent-color: #46a2a9; */
+}
+
+.progress-bar {
+  width: 200px;
 }
 
 .details-btn {
@@ -445,7 +450,7 @@ body.dark .home .text {
   border: 2px solid var(--text-color);
   border-radius: 20px;
   height: auto;
-  width: auto;
+  /* width: auto; */
   margin: 3%;
   padding: 15px;
 }
@@ -459,7 +464,7 @@ body.dark .home .text {
 
 .addtask-container .form-custom .field {
   /* border: 4px solid black; */
-  width: 350px;
+  width: 320px;
   height: 50px;
   border-radius: 10px;
   border: 1px solid #294fb7;
@@ -585,3 +590,11 @@ select:focus {
   transform: translate(0, -11px) rotate(45deg);
 }
 /* URGENT TASKS */
+
+/* add task date picker */
+.priority-date-picker {
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  margin: 20px 0;
+}

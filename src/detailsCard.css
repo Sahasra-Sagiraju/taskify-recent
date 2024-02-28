@@ -73,14 +73,16 @@
 }
 
 .details-box__task-name {
-  text-align: left;
+  text-align: center;
+  /* text-align: left; */
   font-size: 35px;
   font-weight: 600;
 }
 
 .details-box__task-description {
   font-size: 15px;
-  text-align: left;
+  /* text-align: left; */
+  text-align: center;
 }
 
 .details-box__category {
@@ -153,13 +155,14 @@
 }
 
 .details-box__tags-table {
-  width: 230px;
+  /* width: 230px; */
+  width: 260px;
   display: flex;
   flex-direction: column;
   gap: 7px;
   padding: 10px;
-  /* grid-column-start: span 2; */
-  grid-column-start: span 1;
+  grid-column-start: span 2;
+  /* grid-column-start: span 1; */
 }
 
 .details-box__tags-table-item {
@@ -170,7 +173,8 @@
 .details-tag {
   display: inline-block;
   text-align: center;
-  width: 100px;
+  /* width: 100px; */
+  width: 125px;
   padding: 2px 15px;
   border-radius: 13px;
   background: #0e8c87;
@@ -217,8 +221,8 @@
 }
 
 .graph {
-  grid-column-start: span 1;
-  /* grid-column-start: span 4; */
+  /* grid-column-start: span 1; */
+  grid-column-start: span 4;
   width: 100%;
   margin-right: 20px;
 }
