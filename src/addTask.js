@@ -202,7 +202,7 @@ btnAddTask.addEventListener("click", () => {
       while (date <= lastDate) {
         const formattedDate = date.toLocaleDateString();
         console.log(formattedDate);
-        progressEachDay[formattedDate] = undefined;
+        progressEachDay[formattedDate] = 0;
         date.setDate(date.getDate() + 1);
       }
       break;
@@ -212,7 +212,7 @@ btnAddTask.addEventListener("click", () => {
       while (date <= lastDate) {
         const formattedDate = date.toLocaleDateString();
         console.log(formattedDate);
-        progressEachDay[formattedDate] = undefined;
+        progressEachDay[formattedDate] = 0;
         date.setDate(date.getDate() + 7);
       }
       break;
@@ -223,7 +223,7 @@ btnAddTask.addEventListener("click", () => {
       let lastDate = new Date(endDate);
       while (firstDate <= lastDate) {
         const formattedDate = firstDate.toLocaleDateString();
-        progressEachDay[formattedDate] = undefined;
+        progressEachDay[formattedDate] = 0;
         firstDate.setDate(firstDate.getDate() + 7);
       }
       console.log(secondDate);
@@ -231,21 +231,19 @@ btnAddTask.addEventListener("click", () => {
       while (secondDate <= lastDate) {
         console.log("I'm here");
         const formattedDate = secondDate.toLocaleDateString();
-        progressEachDay[formattedDate] = undefined;
+        progressEachDay[formattedDate] = 0;
         secondDate.setDate(secondDate.getDate() + 7);
       }
       break;
     }
     case "monthly": {
       const dates = getMonthlyDates(pickedFirstStartDate, endDate);
-      dates.forEach((date) => (progressEachDay[date] = undefined));
+      dates.forEach((date) => (progressEachDay[date] = 0));
       break;
     }
     default:
       console.log("Line: 232, This is the default case in the switch case!");
   }
-
-  const copyProgressEachDay = { ...progressEachDay };
 
   const newTask = {
     taskName,
@@ -257,15 +255,13 @@ btnAddTask.addEventListener("click", () => {
     priority,
     recurringPeriod,
     duration,
-    progressEachDay: copyProgressEachDay,
+    progressEachDay: { ...progressEachDay },
   };
 
   console.log(newTask);
   const temp = JSON.parse(localStorage.getItem("tasks"));
-  console.log(temp);
   temp.push(newTask);
   localStorage.setItem("tasks", JSON.stringify(temp));
-  console.log(localStorage.getItem("tasks"));
   resetForm();
 });
 

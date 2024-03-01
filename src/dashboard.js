@@ -1,4 +1,7 @@
 import Chart from "chart.js/auto";
+import moment from "moment";
+
+const lodash = require("lodash");
 
 //=============== ACTUAL DASHBOARD CODE ===============
 
@@ -67,7 +70,6 @@ const groupTasks = (tasksArray) => {
 const updateDashboard = () => {
   const tasksArray = JSON.parse(localStorage.getItem("tasks"));
   const [todayTasks, nextDayTasks, thisWeekTasks] = groupTasks(tasksArray);
-  console.log(`todayTasks: ${todayTasks}`);
 
   todaysTasksContainer.innerHTML = "";
   nextDaysTasksContainer.innerHTML = "";
@@ -80,8 +82,12 @@ const updateDashboard = () => {
     );
   } else {
     const temp = 0;
+    const today = moment().format("DD/MM/YYYY");
     todayTasks.forEach((task, index) => {
-      const { taskName, subTask, startDate, customCategory } = task;
+      const { taskName, subTask, startDate, customCategory, progressEachDay } =
+        task;
+      const initialProgress =
+        progressEachDay[today] === null ? 0 : progressEachDay[today];
       todaysTasksContainer.insertAdjacentHTML(
         "beforeend",
         `<div class="Task-name ${"today-task-" + (index + 1)}">
@@ -100,8 +106,8 @@ const updateDashboard = () => {
               </div>
             </div>
             <div class="progress-container">
-              <span class="progress-details">0% Completed</span>
-              <input class="progress-bar" type="range" value="0" min="0" max="100" step="1" />
+              <span class="progress-details">${initialProgress}% Completed</span>
+              <input class="progress-bar" type="range" value="${initialProgress}" min="0" max="100" step="1" />
             </div>
             <button class="details-btn" type="button">Details</button>
           </div>`
@@ -162,13 +168,13 @@ updateDashboard();
 // details button click functionality
 
 const getProgressTillDate = (task) => {
-  const totalProgress = 0;
+  let totalProgress = 0;
   let count = 0;
-  for (const key in Object.keys(task.progressEachDay)) {
-    const date = new Date(key);
-    const today = new Date();
-    if (date <= today && task.progressEachDay[date] > 0) {
-      totalProgress += task.progressEachDay[date];
+  for (const key in task.progressEachDay) {
+    const date = moment(key, "DD/MM/YYYY");
+    const today = moment();
+    if (date.isSameOrBefore(today) && task.progressEachDay[date._i] > 0) {
+      totalProgress += task.progressEachDay[date._i];
       ++count;
     }
   }
@@ -179,6 +185,8 @@ const getProgressTillDate = (task) => {
 };
 
 const renderDetailsCard = (sNo, task) => {
+  const progress = getProgressTillDate(task);
+  const conicGradientDegree = (360 / 100) * progress;
   const {
     taskName,
     taskDesc,
@@ -189,7 +197,7 @@ const renderDetailsCard = (sNo, task) => {
     priority,
     recurringPeriod,
     duration,
-    progress,
+    progressEachDay,
   } = task;
 
   detailsBox.innerHTML = "";
@@ -244,10 +252,9 @@ const renderDetailsCard = (sNo, task) => {
       <!-- progress -->
       <div class="details-box__progress">
         <span class="details-box__property">Progress:</span>
-        <div class="details-box__progress-circle">
-          <span class="details-box__progress-value">${getProgressTillDate(
-            task
-          )}%</span>
+        <div class="details-box__progress-circle" style="  background: conic-gradient(#45a2a9 ${conicGradientDegree}deg, #bcccbf ${conicGradientDegree}deg 360deg);
+        ">
+          <span class="details-box__progress-value">${progress}%</span>
         </div>
       </div>
 
@@ -305,58 +312,21 @@ const renderDetailsCard = (sNo, task) => {
   });
 };
 
-const func = (event) => {
-  if (event.target.classList.contains("details-btn")) {
-    // renderDetailsPage(task);
-
-    dashboardBox.setAttribute("hidden", true);
-    detailsBox.removeAttribute("hidden");
-
-    const tasksArray = JSON.parse(localStorage.getItem("tasks"));
-    const [todayTasks, nextDayTasks, thisWeekTasks] = groupTasks(tasksArray);
-
-    const classNames = event.target.parentElement.classList;
-    const taskType = event.target.parentElement.parentElement.classList[0];
-
-    switch (taskType) {
-      case "Task": {
-        const sNo = +classNames[1].slice(11);
-        const index = sNo - 1;
-        const task = todayTasks[index];
-        console.log(task);
-        renderDetailsCard(sNo, task);
-        break;
-      }
-      case "nextDayTasksContainer": {
-        const sNo = +classNames[1].slice(14);
-        const index = sNo - 1;
-        const task = nextDayTasks[index];
-        renderDetailsCard(sNo, task);
-        break;
-      }
-      case "thisWeeksTasksContainer": {
-        const sNo = +classNames[1].slice(15);
-        const index = sNo - 1;
-        const task = thisWeekTasks[index];
-        renderDetailsCard(sNo, task);
-        break;
-      }
-      default:
-        console.log("something wrong happened");
-    }
-  }
-};
-
-dashboardBox.addEventListener("click", func);
-
-const constructGraph = async () => {
-  const data = [
-    { date: "2024-2-10", progress: 10 },
-    { date: "2024-2-11", progress: 60 },
-    { date: "2024-2-12", progress: 90 },
-    { date: "2024-2-13", progress: 40 },
-    { date: "2024-2-14", progress: 30 },
-  ];
+const constructGraph = async (task) => {
+  const data = Object.keys(task.progressEachDay)
+    .map((date) => ({
+      date,
+      progress:
+        task.progressEachDay[date] === null ? 0 : task.progressEachDay[date],
+    }))
+    .filter((obj) =>
+      moment(obj.date).isSameOrBefore(moment().format("DD/MM/YYYY"))
+    )
+    .sort((obj1, obj2) => {
+      const dateA = moment(obj1.date, "DD/MM/YYYY");
+      const dateB = moment(obj2.date, "DD/MM/YYYY");
+      return dateA.diff(dateB);
+    });
 
   new Chart(document.getElementById("progress-by-day"), {
     type: "line",
@@ -381,14 +351,65 @@ const constructGraph = async () => {
   });
 };
 
-constructGraph();
+dashboardBox.addEventListener("click", (event) => {
+  if (event.target.classList.contains("details-btn")) {
+    dashboardBox.setAttribute("hidden", true);
+    detailsBox.removeAttribute("hidden");
 
-const progressBarInput = document.querySelector(".progress-bar");
-progressBarInput.addEventListener("change", (event) => {
-  document.querySelector(
-    ".progress-details"
-  ).textContent = `${event.target.value}% Completed`;
+    const tasksArray = JSON.parse(localStorage.getItem("tasks"));
+    const [todayTasks, nextDayTasks, thisWeekTasks] = groupTasks(tasksArray);
 
+    const classNames = event.target.parentElement.classList;
+    const taskType = event.target.parentElement.parentElement.classList[0];
+
+    switch (taskType) {
+      case "Task": {
+        const sNo = +classNames[1].slice(11);
+        const index = sNo - 1;
+        const task = todayTasks[index];
+        renderDetailsCard(sNo, task);
+        constructGraph(task);
+        break;
+      }
+      case "nextDayTasksContainer": {
+        const sNo = +classNames[1].slice(14);
+        const index = sNo - 1;
+        const task = nextDayTasks[index];
+        renderDetailsCard(sNo, task);
+        constructGraph(task);
+        break;
+      }
+      case "thisWeeksTasksContainer": {
+        const sNo = +classNames[1].slice(15);
+        const index = sNo - 1;
+        const task = thisWeekTasks[index];
+        renderDetailsCard(sNo, task);
+        constructGraph(task);
+        break;
+      }
+      default:
+        console.log("something wrong happened");
+    }
+  }
+});
+
+document.querySelector(".TodaysTasks").addEventListener("change", (event) => {
+  const taskIndex =
+    event.target.parentElement.parentElement.classList[1].slice(11) - 1;
   const tasksArray = JSON.parse(localStorage.getItem("tasks"));
-  const [todayTasks] = groupTasks(tasksArray);
+  const [todayTasks, nextDayTasks, thisWeekTasks] = groupTasks(tasksArray);
+  const taskToBeChanged = todayTasks[taskIndex];
+  const date = new Date();
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  const formattedDate = `${day}/${month}/${year}`;
+  taskToBeChanged.progressEachDay[formattedDate] = event.target.value;
+  tasksArray.forEach((task) => {
+    if (lodash.isEqual(task, taskToBeChanged)) {
+      task.progressEachDay[formattedDate] = event.target.value;
+    }
+  });
+  localStorage.setItem("tasks", JSON.stringify(tasksArray));
+  event.target.previousElementSibling.textContent = `${event.target.value}% Completed`;
 });
