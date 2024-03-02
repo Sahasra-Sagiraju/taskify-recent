@@ -177,15 +177,12 @@ const getStreak = (task) => {
     }
   );
 
-  console.log(sortedTaskDates);
-
   // find the date this task was last performed on except today
   let index = 0;
   while (
     index < sortedTaskDates.length &&
     moment(sortedTaskDates[index], "DD/MM/YYYY").isBefore(today)
   ) {
-    console.log("I'm here");
     ++index;
   }
 
@@ -346,6 +343,17 @@ const renderDetailsCard = (sNo, task) => {
   backBtn.addEventListener("click", () => {
     detailsBox.setAttribute("hidden", true);
     dashboardBox.removeAttribute("hidden");
+  });
+
+  const deleteBtn = document.querySelector(".bxs-trash-alt");
+  deleteBtn.addEventListener("click", () => {
+    backBtn.click();
+    const tasksArray = JSON.parse(localStorage.getItem("tasks"));
+    const newTasksArray = tasksArray.filter(
+      (ele) => !lodash.isEqual(ele, task)
+    );
+    localStorage.setItem("tasks", JSON.stringify(newTasksArray));
+    updateDashboard();
   });
 };
 
