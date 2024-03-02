@@ -167,6 +167,40 @@ updateDashboard();
 
 // details button click functionality
 
+const getStreak = (task) => {
+  const today = moment(moment().format("DD/MM/YYYY"), "DD/MM/YYYY");
+  const sortedTaskDates = Object.keys(task.progressEachDay).sort(
+    (date1, date2) => {
+      const dateA = moment(date1, "DD/MM/YYYY");
+      const dateB = moment(date2, "DD/MM/YYYY");
+      return dateA.diff(dateB);
+    }
+  );
+
+  console.log(sortedTaskDates);
+
+  // find the date this task was last performed on except today
+  let index = 0;
+  while (
+    index < sortedTaskDates.length &&
+    moment(sortedTaskDates[index], "DD/MM/YYYY").isBefore(today)
+  ) {
+    console.log("I'm here");
+    ++index;
+  }
+
+  --index;
+
+  // count the streak
+  let count = 0;
+  while (index >= 0 && task.progressEachDay[sortedTaskDates[index]] > 0) {
+    ++count;
+    --index;
+  }
+
+  return count;
+};
+
 const getProgressTillDate = (task) => {
   let totalProgress = 0;
   let count = 0;
@@ -189,6 +223,7 @@ const getProgressTillDate = (task) => {
 const renderDetailsCard = (sNo, task) => {
   const progress = getProgressTillDate(task);
   const conicGradientDegree = (360 / 100) * progress;
+  const streak = getStreak(task);
   const {
     taskName,
     taskDesc,
@@ -246,9 +281,9 @@ const renderDetailsCard = (sNo, task) => {
       <!-- streak -->
       <span class="details-box__streak">
         <span class="details-box__property">Streak:</span>
-        <span class="details-box__streak-value">${Math.floor(
-          Math.random() * 50
-        )} days</span>
+        <span class="details-box__streak-value">${streak} ${
+      streak === 1 ? "day" : "days"
+    }</span>
       </span>
 
       <!-- progress -->
