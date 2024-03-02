@@ -41,7 +41,6 @@ const updateUrgentTasksList = () => {
   }
 
   tasksArrayCopy.forEach((task, index) => {
-    console.log("urgent-tasks tag-" + task.duration.toLowerCase());
     urgentTasksContainer.insertAdjacentHTML(
       "beforeend",
       `<div class="urgent-tasks-details">

@@ -207,6 +207,11 @@ const getProgressTillDate = (task) => {
     if (date.isSameOrBefore(today)) {
       ++count;
     }
+
+    if (count === 0) {
+      return 0;
+    }
+
     if (date.isSameOrBefore(today) && task.progressEachDay[date._i] > 0) {
       totalProgress += Number(task.progressEachDay[date._i]);
     }
