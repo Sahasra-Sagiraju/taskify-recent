@@ -26,7 +26,7 @@ let pickedFirstEndDate = "";
 let pickedSecondStartDate = "";
 let pickedSecondEndDate = "";
 let customCategory = "";
-let priorityfind = "";
+let priority = "";
 let duration = "";
 let progressEachDay = {};
 
@@ -67,7 +67,7 @@ const resetForm = () => {
   pickedSecondStartDate = "";
   pickedSecondEndDate = "";
   customCategory = "";
-  priorityfind = "";
+  priority = "";
   duration = "";
 
   priorityDatePicker.innerHTML = "";

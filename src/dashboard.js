@@ -14,6 +14,14 @@ const dashboardBox = document.querySelector(".dashboard-box");
 const detailsBox = document.querySelector(".details-box");
 
 // Helper functions
+function formatNumber(num) {
+  if (Number.isInteger(num)) {
+    return num.toString();
+  } else {
+    return num.toFixed(2);
+  }
+}
+
 const remDays = (currentDay) => 7 - currentDay;
 const resetTimeForDates = (startDate, testDate, endDate) => {
   startDate.setHours(0, 0, 0, 0);
@@ -78,7 +86,7 @@ const updateDashboard = () => {
   if (todayTasks.length === 0) {
     todaysTasksContainer.insertAdjacentHTML(
       "beforeend",
-      "<h2>No Tasks Available for today</h2>"
+      "<h3>No Tasks Available for today</h3>"
     );
   } else {
     const temp = 0;
@@ -88,6 +96,7 @@ const updateDashboard = () => {
         task;
       const initialProgress =
         progressEachDay[today] === null ? 0 : progressEachDay[today];
+      console.log(initialProgress);
       todaysTasksContainer.insertAdjacentHTML(
         "beforeend",
         `<div class="Task-name ${"today-task-" + (index + 1)}">
@@ -118,7 +127,7 @@ const updateDashboard = () => {
   if (nextDayTasks.length === 0) {
     nextDaysTasksContainer.insertAdjacentHTML(
       "beforeend",
-      "<h2>No Tasks Available for tomorrow</h2>"
+      "<h3>No Tasks Available for tomorrow</h3>"
     );
   } else {
     nextDayTasks.forEach((task, index) => {
@@ -141,7 +150,7 @@ const updateDashboard = () => {
   if (thisWeekTasks.length === 0) {
     thisWeeksTasksContainer.insertAdjacentHTML(
       "beforeend",
-      "<h2>No Tasks Available for this week</h2>"
+      "<h3>No Tasks Available for this week</h3>"
     );
   } else {
     thisWeekTasks.forEach((task, index) => {
@@ -217,9 +226,10 @@ const getProgressTillDate = (task) => {
     }
   }
 
-  const possibleProgress = count * 100;
+  // const possibleProgress = count * 100;
+  const possibleProgress = Object.keys(task.progressEachDay).length * 100;
   const totalProgressPercentage = (totalProgress / possibleProgress) * 100;
-  return totalProgressPercentage;
+  return formatNumber(totalProgressPercentage);
 };
 
 const renderDetailsCard = (sNo, task) => {
@@ -337,6 +347,14 @@ const renderDetailsCard = (sNo, task) => {
       <div class="graph">
         <canvas id="progress-by-day"></canvas>
       </div>
+
+      <dialog class="dialog">
+        <p>Are you sure you want to delete this task?</p>
+        <div>
+          <button class="no-btn">No</button>
+          <button class="yes-btn">Yes</button>
+        </div>
+      </dialog>
     </div>
   </div>
     `
@@ -350,8 +368,20 @@ const renderDetailsCard = (sNo, task) => {
   });
 
   const deleteBtn = document.querySelector(".bxs-trash-alt");
+  const dialogBox = document.querySelector(".dialog");
+  const noBtn = document.querySelector(".no-btn");
+  const yesBtn = document.querySelector(".yes-btn");
   deleteBtn.addEventListener("click", () => {
+    dialogBox.showModal();
+  });
+
+  noBtn.addEventListener("click", () => {
+    dialogBox.close();
+  });
+
+  yesBtn.addEventListener("click", () => {
     backBtn.click();
+    dialogBox.close();
     const tasksArray = JSON.parse(localStorage.getItem("tasks"));
     const newTasksArray = tasksArray.filter(
       (ele) => !lodash.isEqual(ele, task)
