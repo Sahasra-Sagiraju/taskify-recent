@@ -173,9 +173,11 @@ const getProgressTillDate = (task) => {
   for (const key in task.progressEachDay) {
     const date = moment(key, "DD/MM/YYYY");
     const today = moment();
-    if (date.isSameOrBefore(today) && task.progressEachDay[date._i] > 0) {
-      totalProgress += task.progressEachDay[date._i];
+    if (date.isSameOrBefore(today)) {
       ++count;
+    }
+    if (date.isSameOrBefore(today) && task.progressEachDay[date._i] > 0) {
+      totalProgress += Number(task.progressEachDay[date._i]);
     }
   }
 
@@ -272,7 +274,7 @@ const renderDetailsCard = (sNo, task) => {
         </div>
         <div class="details-box__tags-table-item">
           <span class="details-box__property">Priority:</span>
-          <span class="details-box__property-value details-tag details-tag-low">
+          <span class="details-box__property-value details-tag details-tag-${duration.toLowerCase()}">
               ${duration}
           </span>
         </div>
