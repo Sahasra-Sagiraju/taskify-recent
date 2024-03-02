@@ -116,7 +116,7 @@ priorityDiv.addEventListener("change", (event) => {
         return;
       }
       lastDate.setDate(lastDate.getDate() + 7);
-      console.log(typeof date);
+
       const formattedStartDate = date.toISOString().split("T")[0];
       const formattedLastDate = lastDate.toISOString().split("T")[0];
       priorityDatePicker.insertAdjacentHTML(
@@ -165,13 +165,6 @@ priorityDiv.addEventListener("change", (event) => {
   }
 });
 
-const printTasks = () => {
-  const tasks = JSON.parse(localStorage.getItem("tasks"));
-  tasks.forEach((element) => {
-    console.log(element);
-  });
-};
-
 const getMinDate = (date1, date2) => {
   if (date1 < date2) {
     return date1;
@@ -196,12 +189,10 @@ btnAddTask.addEventListener("click", () => {
   const progressEachDay = {};
   switch (priority) {
     case "daily":
-      console.log("I'm here");
       let date = new Date(startDate);
       let lastDate = new Date(endDate);
       while (date <= lastDate) {
         const formattedDate = date.toLocaleDateString();
-        console.log(formattedDate);
         progressEachDay[formattedDate] = 0;
         date.setDate(date.getDate() + 1);
       }
@@ -211,7 +202,6 @@ btnAddTask.addEventListener("click", () => {
       let lastDate = new Date(endDate);
       while (date <= lastDate) {
         const formattedDate = date.toLocaleDateString();
-        console.log(formattedDate);
         progressEachDay[formattedDate] = 0;
         date.setDate(date.getDate() + 7);
       }
@@ -226,10 +216,7 @@ btnAddTask.addEventListener("click", () => {
         progressEachDay[formattedDate] = 0;
         firstDate.setDate(firstDate.getDate() + 7);
       }
-      console.log(secondDate);
-      console.log(lastDate);
       while (secondDate <= lastDate) {
-        console.log("I'm here");
         const formattedDate = secondDate.toLocaleDateString();
         progressEachDay[formattedDate] = 0;
         secondDate.setDate(secondDate.getDate() + 7);
@@ -242,7 +229,7 @@ btnAddTask.addEventListener("click", () => {
       break;
     }
     default:
-      console.log("Line: 232, This is the default case in the switch case!");
+      console.log("Something went wrong!");
   }
 
   const newTask = {
@@ -258,18 +245,11 @@ btnAddTask.addEventListener("click", () => {
     progressEachDay: { ...progressEachDay },
   };
 
-  console.log(newTask);
   const temp = JSON.parse(localStorage.getItem("tasks"));
   temp.push(newTask);
   localStorage.setItem("tasks", JSON.stringify(temp));
   resetForm();
 });
-
-// setTimeout(() => {
-//   printTasks();
-// }, 0);
-// const temp = getDatePickerHTML(priority, startDate);
-//       console.log(temp);
 
 const formDiv = document.querySelector(".form-custom");
 formDiv.addEventListener("change", (event) => {
@@ -281,7 +261,6 @@ formDiv.addEventListener("change", (event) => {
       endDate = inputEndDate.value;
     }
   }
-  console.log(startDate, endDate);
 });
 
 priorityDatePicker.addEventListener("change", () => {

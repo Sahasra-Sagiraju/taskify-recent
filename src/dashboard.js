@@ -250,7 +250,6 @@ const renderDetailsCard = (sNo, task) => {
         style="color: #fffefe"
       ></i>
       <div class="details-box__header-inner-container">
-        <i class="bx bxs-edit" style="color: #fffefe"></i>
         <i class="bx bxs-trash-alt" style="color: #fffefe"></i>
       </div>
     </div>
@@ -438,7 +437,7 @@ dashboardBox.addEventListener("click", (event) => {
         break;
       }
       default:
-        console.log("something wrong happened");
+        console.log("something went wrong!");
     }
   }
 });
