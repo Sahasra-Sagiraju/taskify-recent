@@ -37,7 +37,7 @@ function getMonthlyDates(pickedFirstStartDate, endDate) {
   let monthlyDates = [];
 
   while (!startMoment.isAfter(endMoment)) {
-    const lastDayOfMonth = startMoment.endOf("month").format("YYYY-MM-DD");
+    const lastDayOfMonth = startMoment.endOf("month").format("DD-MM-YYYY");
     monthlyDates.push(lastDayOfMonth);
 
     startMoment.add(1, "month");
@@ -192,7 +192,11 @@ btnAddTask.addEventListener("click", () => {
       let date = new Date(startDate);
       let lastDate = new Date(endDate);
       while (date <= lastDate) {
-        const formattedDate = date.toLocaleDateString();
+        const formattedDate = date
+          .toLocaleDateString()
+          .split("/")
+          .map((s) => s.padStart(2, "0"))
+          .join("/");
         progressEachDay[formattedDate] = 0;
         date.setDate(date.getDate() + 1);
       }
@@ -201,7 +205,11 @@ btnAddTask.addEventListener("click", () => {
       let date = new Date(pickedFirstStartDate);
       let lastDate = new Date(endDate);
       while (date <= lastDate) {
-        const formattedDate = date.toLocaleDateString();
+        const formattedDate = date
+          .toLocaleDateString()
+          .split("/")
+          .map((s) => s.padStart(2, "0"))
+          .join("/");
         progressEachDay[formattedDate] = 0;
         date.setDate(date.getDate() + 7);
       }
@@ -212,12 +220,20 @@ btnAddTask.addEventListener("click", () => {
       let secondDate = new Date(pickedSecondStartDate);
       let lastDate = new Date(endDate);
       while (firstDate <= lastDate) {
-        const formattedDate = firstDate.toLocaleDateString();
+        const formattedDate = firstDate
+          .toLocaleDateString()
+          .split("/")
+          .map((s) => s.padStart(2, "0"))
+          .join("/");
         progressEachDay[formattedDate] = 0;
         firstDate.setDate(firstDate.getDate() + 7);
       }
       while (secondDate <= lastDate) {
-        const formattedDate = secondDate.toLocaleDateString();
+        const formattedDate = secondDate
+          .toLocaleDateString()
+          .split("/")
+          .map((s) => s.padStart(2, "0"))
+          .join("/");
         progressEachDay[formattedDate] = 0;
         secondDate.setDate(secondDate.getDate() + 7);
       }
@@ -244,6 +260,7 @@ btnAddTask.addEventListener("click", () => {
     duration,
     progressEachDay: { ...progressEachDay },
   };
+  console.log(newTask);
 
   const temp = JSON.parse(localStorage.getItem("tasks"));
   temp.push(newTask);
