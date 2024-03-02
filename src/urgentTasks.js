@@ -40,7 +40,7 @@ const updateUrgentTasksList = () => {
   if (tasksArray.length === 0) {
     urgentTasksContainer.insertAdjacentHTML(
       "beforeend",
-      "<h1>No urgent tasks available</h1>"
+      `<h1 style="text-align: center;">No urgent tasks available</h1>`
     );
     return;
   }

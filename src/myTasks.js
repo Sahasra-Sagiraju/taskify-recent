@@ -247,6 +247,13 @@ const updateMyTasksList = () => {
 
   myTasksContainer.innerHTML = "";
 
+  if (tasks.length === 0) {
+    myTasksContainer.insertAdjacentHTML(
+      "beforeend",
+      `<h2 style="text-align: center;">No tasks available to show. Please create one :)</h2>`
+    );
+  }
+
   tasks.forEach((task, index) => {
     const {
       taskName,
